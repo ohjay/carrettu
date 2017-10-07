@@ -1,0 +1,26 @@
+import os
+uname = os.uname()
+if not uname[4].startswith('arm'):
+    print('Loading modules for server.')
+    from . import (utils, 
+                   models, 
+                   datasets, 
+                   sessions,
+                   remotes, 
+                   sensors,
+                   actuators,
+                   mixers,
+                   vehicles,
+                   pilots,
+                   templates,
+                   config) 
+else:
+    print('Detected running on Raspberry Pi. Only importing select modules.')
+    from . import (actuators, 
+                   mixers, 
+                   remotes, 
+                   sensors, 
+                   vehicles, 
+                   config,
+                   pilots,
+                   models)
