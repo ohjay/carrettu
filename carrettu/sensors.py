@@ -47,16 +47,15 @@ class PiVideoStream(BaseCamera):
         self.camera = PiCamera()
         self.camera.resolution = resolution
         self.camera.framerate = framerate
-        self.rawCapture = PiRGBArray(self.camera, size=resolution)
-        self.stream = self.camera.capture_continuous(self.rawCapture,
-                                                     format="rgb", use_video_port=True)
+        self.raw_capture = PiRGBArray(self.camera, size=resolution)
+        self.stream = self.camera.capture_continuous(self.raw_capture, format='rgb', use_video_port=True)
  
         # initialize the frame and the variable used to indicate
         # if the thread should be stopped
         self.frame = None
         self.stopped = False
         
-        print('PiVideoStream loaded.. .warming camera')
+        print('PiVideoStream loaded... warming camera')
 
         time.sleep(2)
         self.start()
@@ -67,13 +66,13 @@ class PiVideoStream(BaseCamera):
             # grab the frame from the stream and clear the stream in
             # preparation for the next frame
             self.frame = f.array
-            self.rawCapture.truncate(0)
+            self.raw_capture.truncate(0)
  
             # if the thread indicator variable is set, stop the thread
             # and resource camera resources
             if self.stopped:
                 self.stream.close()
-                self.rawCapture.close()
+                self.raw_capture.close()
                 self.camera.close()
                 return
 

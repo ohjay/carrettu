@@ -5,10 +5,11 @@ Class to pull together all parts that operate the vehicle (e.g. sensors and actu
 """
 
 import time
+from . import vision
 
 class BaseVehicle:
     def __init__(self, drive_loop_delay=0.5, camera=None, actuator_mixer=None):
-        self.drive_loop_delay = drive_loop_delay # how long to wait between loops
+        self.drive_loop_delay = drive_loop_delay  # how long to wait between loops
 
         # these need to be updated when vehicle is defined
         self.camera = camera
@@ -42,6 +43,7 @@ class BaseVehicle:
 class TestVehicle(BaseVehicle):
 
     def start(self):
+        print('[+] Starting the car.')
         start_time = time.time()
 
         # Wait two seconds before starting the script
@@ -49,20 +51,25 @@ class TestVehicle(BaseVehicle):
 
         # drive loop
         while True:
-            print('next loop iteration')
             now = time.time()
 
             # Stop the loop if it has run for 60 sec
             if (now - start_time) >= 40:
-                print('[o] Done.')
                 break
 
             start = now
 
             # get image array image from camera (threaded)
-            # img_arr = self.camera.capture_arr()
+            img = self.camera.capture_arr()
 
-            # Set angle, throttle, and drive_mode depending on img_arr
+            """
+            TODO: USE `img` TO DECIDE ON ANGLE AND THROTTLE
+            """
+
+            print(type(img))
+            print(img.shape)  # for debugging
+            print('Dominant colors: %r' % vision.dominant_colors(img))
+
             angle = 0
             throttle = 0.2
 
