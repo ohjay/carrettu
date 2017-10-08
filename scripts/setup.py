@@ -2,31 +2,25 @@
 setup.py 
 
 Run this once before doing anything to create a default 
-folder structure and configfiles.
+folder structure and config files.
 
 Usage:
     setup.py
 """
 
-
 import os
 import shutil
-import configparser
-
 from docopt import docopt
 
-import donkey as dk
+import carrettu as ctu
 
-
-
-# Get args.
 if __name__ == "__main__":
     args = docopt(__doc__)
 
     print('Setting up carrettu folders.')
-    dk.config.setup_paths()
+    ctu.config.setup_paths()
 
-    config_path = os.path.join(dk.config.my_path, 'vehicle.ini')
+    config_path = os.path.join(ctu.config.ctu_path, 'vehicle.ini')
     print(config_path)
 
     shutil.copyfile('./config/vehicle.ini', config_path)

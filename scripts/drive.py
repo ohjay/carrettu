@@ -27,14 +27,14 @@ if __name__ == '__main__':
     steering_controller = ctu.actuators.PCA9685_Controller(cfg['steering_actuator_channel'])
 
     # set the PWM ranges
-    throttle = ctu.actuators.PWMThrottleActuator(controller=throttle_controller,
-                                                  min_pulse=cfg['throttle_actuator_min_pulse'],
-                                                  max_pulse=cfg['throttle_actuator_max_pulse'],
-                                                  zero_pulse=cfg['throttle_actuator_zero_pulse'])
+    throttle = ctu.actuators.PWMThrottle(controller=throttle_controller,
+                                         min_pulse=cfg['throttle_actuator_min_pulse'],
+                                         max_pulse=cfg['throttle_actuator_max_pulse'],
+                                         zero_pulse=cfg['throttle_actuator_zero_pulse'])
 
-    steering = ctu.actuators.PWMSteeringActuator(controller=steering_controller,
-                                                  left_pulse=cfg['steering_actuator_min_pulse'],
-                                                  right_pulse=cfg['steering_actuator_max_pulse'])
+    steering = ctu.actuators.PWMSteering(controller=steering_controller,
+                                         left_pulse=cfg['steering_actuator_min_pulse'],
+                                         right_pulse=cfg['steering_actuator_max_pulse'])
 
     # abstract class to combine actuators
     mixer = ctu.mixers.AckermannSteeringMixer(steering, throttle)
@@ -42,10 +42,10 @@ if __name__ == '__main__':
     # asynchronous img capture from pi camera
     camera = ctu.sensors.PiVideoStream()
 
-    # Create your car
+    # Create the car
     car = ctu.vehicles.TestVehicle(drive_loop_delay=cfg['vehicle_loop_delay'],
-                                  camera=camera,
-                                  actuator_mixer=mixer)
+                                   camera=camera,
+                                   actuator_mixer=mixer)
     
     # Start the drive loop
     car.start()

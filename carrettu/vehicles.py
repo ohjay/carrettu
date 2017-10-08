@@ -1,8 +1,7 @@
 """
 vehicles.py
 
-Class to pull together all parts that operate the vehicle including,
-sensors, actuators, pilots and remotes.
+Class to pull together all parts that operate the vehicle (e.g. sensors and actuators).
 """
 
 import time
@@ -11,7 +10,7 @@ class BaseVehicle:
     def __init__(self, drive_loop_delay=0.5, camera=None, actuator_mixer=None):
         self.drive_loop_delay = drive_loop_delay # how long to wait between loops
 
-        # these need tobe updated when vehicle is defined
+        # these need to be updated when vehicle is defined
         self.camera = camera
         self.actuator_mixer = actuator_mixer
 
@@ -41,12 +40,6 @@ class BaseVehicle:
             time.sleep(self.drive_loop_delay)
 
 class TestVehicle(BaseVehicle):
-
-    def __init__(self,
-                 drive_loop_delay=0.5,
-                 camera=None,
-                 actuator_mixer=None):
-        BaseVehicle.__init__(self, drive_loop_delay, camera, actuator_mixer)
 
     def start(self):
         start_time = time.time()

@@ -1,18 +1,14 @@
-'''
+"""
 utils.py
 
 Functions that don't fit anywhere else.
+"""
 
-'''
-import random 
-import pickle
-import math
 from io import BytesIO
 import os
 import glob
 import socket
-import math
-
+import zipfile
 
 import itertools
 
@@ -26,9 +22,9 @@ IMAGES
 def scale(im, size=128):
     '''
     accepts: PIL image, size of square sides
-    returns: PIL image scaled so sides lenght = size 
+    returns: PIL image scaled so sides lenght = size
     '''
-    size = (size,size)
+    size = (size, size)
     im.thumbnail(size, Image.ANTIALIAS)
     return im
 
@@ -65,7 +61,6 @@ def img_to_arr(img):
     '''
     return np.array(img)
 
-
 def binary_to_img(binary):
     '''
     accepts: binary file object from BytesIO
@@ -75,7 +70,7 @@ def binary_to_img(binary):
     return Image.open(img)
 
 def norm_img(img):
-    return (img - img.mean() / np.std(img))/255.0
+    return (img - img.mean() / np.std(img)) / 255.0
 
 def create_video(img_dir_path, output_video_path):
     import envoy
@@ -111,18 +106,35 @@ def make_dir(path):
         os.makedirs(real_path)
     return real_path
 
+def zip_dir(dir_path, zip_path):
+    """
+    Create and save a zipfile of a one level directory
+    """
+    file_paths = glob.glob(dir_path + "/*")  # create path to search for files.
+
+    zf = zipfile.ZipFile(zip_path, 'w')
+    dir_name = os.path.basename(dir_path)
+    for p in file_paths:
+        file_name = os.path.basename(p)
+        zf.write(p, arcname=os.path.join(dir_name, file_name))
+    zf.close()
+    return zip_path
+
 '''
 BINNING
-functions to help converte between floating point numbers and categories.
+functions to help convert between floating point numbers and categories.
 '''
 
 def linear_bin(a):
     a = a + 1
-    b = round(a / (2/14))
-    return int(b)
+    b = round(a / (2 / 14))
+    arr = np.zeros(15)
+    arr[int(b)] = 1
+    return arr
 
-def linear_unbin(b):
-    a = b *(2/14) - 1
+def linear_unbin(arr):
+    b = np.argmax(arr)
+    a = b * (2 / 14) - 1
     return a
 
 def bin_Y(Y):
@@ -131,15 +143,26 @@ def bin_Y(Y):
         arr = np.zeros(15)
         arr[linear_bin(y)] = 1
         d.append(arr)
-    return np.array(d) 
-        
+    return np.array(d)
+
 def unbin_Y(Y):
-    d=[]
+    d = []
     for y in Y:
-        v = np.argmax(y)
-        v = linear_unbin(v)
+        v = linear_unbin(y)
         d.append(v)
     return np.array(d)
+
+def map_range(x, X_min, X_max, Y_min, Y_max):
+    """
+    Linear mapping between two ranges of values.
+    """
+    X_range = X_max - X_min
+    Y_range = Y_max - Y_min
+    XY_ratio = X_range / Y_range
+
+    y = ((x - X_min) / XY_ratio + Y_min) // 1
+
+    return int(y)
 
 '''
 NETWORKING
@@ -153,6 +176,7 @@ def my_ip():
 '''
 OTHER
 '''
+
 def merge_two_dicts(x, y):
     """Given two dicts, merge them into a new dict as a shallow copy."""
     z = x.copy()
@@ -161,7 +185,7 @@ def merge_two_dicts(x, y):
 
 def param_gen(params):
     '''
-    Accepts a dictionary of parameter options and returns 
+    Accepts a dictionary of parameter options and returns
     a list of dictionary with the permutations of the parameters.
     '''
     for p in itertools.product(*params.values()):

@@ -5,28 +5,16 @@ import carrettu as ctu
 
 config = configparser.ConfigParser()
 
-my_path = os.path.expanduser('~/mydonkey/')
-sessions_path = os.path.join(my_path, 'sessions')
-models_path = os.path.join(my_path, 'models')
-datasets_path = os.path.join(my_path, 'datasets')
-results_path = os.path.join(my_path, 'results')
-
+ctu_path = os.path.expanduser('~/carrettu/')
 
 def setup_paths():
-    ctu.utils.make_dir(my_path)
-
-    paths = [sessions_path, models_path, 
-             datasets_path, results_path]
-
-    for p in paths:
-        ctu.utils.make_dir(p)
-
+    ctu.utils.make_dir(ctu_path)
 
 def parse_config(config_path):
     config_path = os.path.expanduser(config_path)
     config.read(config_path)
 
-    cfg={}
+    cfg = {}
 
     vehicle = config['vehicle']
     cfg['vehicle_id'] = vehicle.get('id')
