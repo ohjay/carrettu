@@ -11,17 +11,13 @@ class BaseVehicle:
     def __init__(self,
                  drive_loop_delay = .5,
                  camera=None,
-                 actuator_mixer=None,
-                 pilot=None,
-                 remote=None):
+                 actuator_mixer=None):
 
         self.drive_loop_delay = drive_loop_delay #how long to wait between loops
 
         #these need tobe updated when vehicle is defined
         self.camera = camera
         self.actuator_mixer = actuator_mixer
-        self.pilot = pilot
-        self.remote = remote
 
     def start(self):
         start_time = time.time()
@@ -35,20 +31,11 @@ class BaseVehicle:
 
             milliseconds = int( (now - start_time) * 1000)
 
-            #get image array image from camera (threaded)
+            # get image array image from camera (threaded)
             img_arr = self.camera.capture_arr()
 
-            angle, throttle, drive_mode = self.remote.decide_threaded(img_arr,
-                                                 angle, 
-                                                 throttle,
-                                                 milliseconds)
-
-            if drive_mode == 'local':
-                angle, throttle = self.pilot.decide(img_arr)
-
-            if drive_mode == 'local_angle':
-                #only update angle from local pilot
-                angle, _ = self.pilot.decide(img_arr)
+            angle, throttle, drive_mode = 0, 0, 'user'
+            # angle, throttle, drive_mode = self.remote.decide_threaded(img_arr, angle, throttle, milliseconds)
 
             self.actuator_mixer.update(throttle, angle)
 
