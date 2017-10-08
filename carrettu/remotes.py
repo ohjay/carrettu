@@ -20,7 +20,7 @@ import tornado.web
 
 from PIL import Image
 
-import donkey as dk
+import carrettu as dk
 
 class RemoteClient():
     '''
@@ -140,24 +140,24 @@ class RemoteClient():
 
 class DonkeyPilotApplication(tornado.web.Application):
 
-    def __init__(self, mydonkey_path='~/mydonkey/'):
+    def __init__(self, mycarrettu_path='~/mycarrettu/'):
         ''' 
         Create and publish variables needed on many of 
         the web handlers.
         '''
 
         print('hello')
-        if not os.path.exists(os.path.expanduser(mydonkey_path)):
-            raise ValueError('Could not find mydonkey folder. Please run "python scripts/setup.py"')
+        if not os.path.exists(os.path.expanduser(mycarrettu_path)):
+            raise ValueError('Could not find mycarrettu folder. Please run "python scripts/setup.py"')
 
         self.vehicles = {}
 
         this_dir = os.path.dirname(os.path.realpath(__file__))
         self.static_file_path = os.path.join(this_dir, 'templates', 'static')
 
-        self.mydonkey_path = os.path.expanduser(mydonkey_path)
-        self.sessions_path = os.path.join(self.mydonkey_path, 'sessions')
-        self.models_path = os.path.join(self.mydonkey_path, 'models')
+        self.mycarrettu_path = os.path.expanduser(mycarrettu_path)
+        self.sessions_path = os.path.join(self.mycarrettu_path, 'sessions')
+        self.models_path = os.path.join(self.mycarrettu_path, 'models')
 
         ph = dk.pilots.PilotHandler(self.models_path)
         self.pilots = ph.default_pilots()

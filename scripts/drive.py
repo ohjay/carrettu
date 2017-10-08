@@ -15,7 +15,7 @@ Options:
 import os
 from docopt import docopt
 
-import donkey as dk
+import carrettu as dk
 
 # Get args.
 args = docopt(__doc__)

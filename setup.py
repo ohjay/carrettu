@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
-setup(name='donkey',
+setup(name='carrettu',
     version='0.01',
     description='A library for small scale DIY self driving cars',
-    url='https//github.com/wroscoe/donkey',
+    url='https//github.com/ohjay/carrettu',
     author='Will Roscoe',
     author_email='wroscoe@gmail.com',
     license='MIT',
