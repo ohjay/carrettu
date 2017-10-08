@@ -51,15 +51,11 @@ class TestVehicle(BaseVehicle):
     def __init__(self,
                  drive_loop_delay = .5,
                  camera=None,
-                 actuator_mixer=None,
-                 pilot=None,
-                 remote=None):
-        BaseVehicle.__init__(self, drive_loop_delay, camera, actuator_mixer, pilot, remote)
+                 actuator_mixer=None):
+        BaseVehicle.__init__(self, drive_loop_delay, camera, actuator_mixer)
 
     def start(self):
         start_time = time.time()
-        angle = 0.
-        throttle = 0.
 
         # Wait 30 sec before starting the script
         time.sleep(30)
