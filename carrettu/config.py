@@ -4,7 +4,6 @@ import configparser
 import carrettu as ctu
 
 config = configparser.ConfigParser()
-
 ctu_path = os.path.expanduser('~/carrettu/')
 
 def setup_paths():

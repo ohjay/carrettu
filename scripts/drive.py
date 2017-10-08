@@ -1,32 +1,26 @@
 """
 drive.py
 
-Script to run on the Raspberry PI to start your vehicle's drive loop. The drive loop
-will use post requests to the server specified in the remote argument. Run the 
-serve.py script on a different computer to start the remote server.
+Script to run on the Raspberry Pi in order to start your vehicle's drive loop.
 
 Usage:
-    drive.py [--remote=<name>] [--config=<name>]
-
-Options:
-  --config=<name>   vehicle configuration file name (without extension)  [default: vehicle]
+    drive.py
 """
 
 from docopt import docopt
 import carrettu as ctu
 
-# Get args.
 args = docopt(__doc__)
 
 if __name__ == '__main__':
-    # load config file
+    # Load config file
     cfg = ctu.config.parse_config('~/mydonkey/vehicle.ini')
 
-    # load the actuators (default is the adafruit servo hat)
+    # Load the actuators (default is the Adafruit servo hat)
     throttle_controller = ctu.actuators.PCA9685_Controller(cfg['throttle_actuator_channel'])
     steering_controller = ctu.actuators.PCA9685_Controller(cfg['steering_actuator_channel'])
 
-    # set the PWM ranges
+    # Set the PWM ranges
     throttle = ctu.actuators.PWMThrottle(controller=throttle_controller,
                                          min_pulse=cfg['throttle_actuator_min_pulse'],
                                          max_pulse=cfg['throttle_actuator_max_pulse'],
@@ -36,10 +30,10 @@ if __name__ == '__main__':
                                          left_pulse=cfg['steering_actuator_min_pulse'],
                                          right_pulse=cfg['steering_actuator_max_pulse'])
 
-    # abstract class to combine actuators
+    # Abstract class to combine actuators
     mixer = ctu.mixers.AckermannSteeringMixer(steering, throttle)
 
-    # asynchronous img capture from pi camera
+    # Asynchronous image capture from Pi camera
     camera = ctu.sensors.PiVideoStream()
 
     # Create the car

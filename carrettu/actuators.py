@@ -36,19 +36,18 @@ class PWMSteering:
         self.right_pulse = right_pulse
 
     def update(self, angle):
-        # map absolute angle to angle that vehicle can implement.
+        # Map absolute angle to an angle that vehicle can implement
         pulse = utils.map_range(angle,
                                 self.LEFT_ANGLE, self.RIGHT_ANGLE,
                                 self.left_pulse, self.right_pulse)
         self.controller.set_pulse(pulse)
 
     def shutdown(self):
-        self.update(0)  # set steering straight
+        self.update(0)  # straighten the wheels
 
 class PWMThrottle:
     """
-    Wrapper over a PWM motor controller to convert -1 to 1 throttle
-    values to PWM pulses.
+    Wrapper over a PWM motor controller to convert -1 to 1 throttle values to PWM pulses.
     """
     MIN_THROTTLE = -1
     MAX_THROTTLE = 1
@@ -59,20 +58,15 @@ class PWMThrottle:
         self.min_pulse = min_pulse
         self.zero_pulse = zero_pulse
 
-        # send zero pulse to calibrate ESC
+        # Send zero pulse to calibrate ESC
         self.controller.set_pulse(self.zero_pulse)
         time.sleep(1)
 
     def update(self, throttle):
         if throttle > 0:
-            pulse = utils.map_range(throttle,
-                                    0, self.MAX_THROTTLE,
-                                    self.zero_pulse, self.max_pulse)
+            pulse = utils.map_range(throttle, 0, self.MAX_THROTTLE, self.zero_pulse, self.max_pulse)
         else:
-            pulse = utils.map_range(throttle,
-                                    self.MIN_THROTTLE, 0,
-                                    self.min_pulse, self.zero_pulse)
-
+            pulse = utils.map_range(throttle, self.MIN_THROTTLE, 0, self.min_pulse, self.zero_pulse)
         self.controller.set_pulse(pulse)
 
     def shutdown(self):

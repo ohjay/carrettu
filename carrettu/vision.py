@@ -4,10 +4,10 @@ from PIL import Image
 # pass a numpy array and checks to see how much black is inside (assuming black = 0)
 
 # TODO: determine if a whole array of RGB values is green or not (or somehow send information saying if there's a lot of green or not)
-def examineImage(image):
+def examine_image(image):
     pass
 
-#this takes in a tuple (something like (0,0,0) which is an RGB value, and returns either "green" or "not green" [this could be true/false too])
+# this takes in a tuple (something like (0,0,0) which is an RGB value, and returns either "green" or "not green" [this could be true/false too])
 def examine_color_tuple(triple):
     try:
         color_name = webcolors.rgb_to_name(triple)
@@ -37,7 +37,7 @@ def closest_color(requested_color):
     return min_colors[min(min_colors.keys())]
 
 def dominant_colors(image):
-    image = Image.fromarray(image)
+    image = Image.fromarray(image, 'RGB')
     colors = image.getcolors(maxcolors=512)
     if colors is None:
         return colors
@@ -45,9 +45,8 @@ def dominant_colors(image):
     return [c[1] for c in reversed(colors[-3:])]
 
 def main():
-    print("In main")
-    test = (0,255,129)
-    print(examineImage(test))
+    test = (0, 255, 129)
+    print(examine_image(test))
 
 if __name__ == '__main__':
     main()

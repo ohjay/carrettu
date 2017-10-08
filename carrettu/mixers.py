@@ -4,8 +4,7 @@ mixers.py
 Classes to wrap motor controllers into a functional drive unit.
 """
 
-class BaseMixer():
-
+class BaseMixer:
     def update_angle(self, angle):
         pass
 
@@ -13,15 +12,15 @@ class BaseMixer():
         pass
 
     def update(self, throttle=0, angle=0):
-        """Convenience function to update
-        angle and throttle at the same time"""
+        """
+        Convenience function to update angle and throttle at the same time.
+        """
         self.update_angle(angle)
         self.update_throttle(throttle)
 
 class AckermannSteeringMixer(BaseMixer):
     """
-    Mixer for vehicles steered by changing the angle of the front wheels.
-    This is used for RC cars.
+    Mixer for vehicles steered by changing the angle of the front wheels (i.e. RC cars).
     """
     def __init__(self, steering_actuator=None, throttle_actuator=None):
         self.steering_actuator = steering_actuator
