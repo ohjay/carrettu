@@ -32,7 +32,6 @@ def scale(im, size=128):
     im.thumbnail(size, Image.ANTIALIAS)
     return im
 
-
 def img_to_binary(img):
     '''
     accepts: PIL image
@@ -42,7 +41,6 @@ def img_to_binary(img):
     img.save(f, format='jpeg')
     return f.getvalue()
 
-
 def arr_to_binary(arr):
     '''
     accepts: numpy array with shape (Hight, Width, Channels)
@@ -50,7 +48,6 @@ def arr_to_binary(arr):
     '''
     img = arr_to_img(arr)
     return img_to_binary(img)
-
 
 def arr_to_img(arr):
     '''
@@ -77,10 +74,8 @@ def binary_to_img(binary):
     img = BytesIO(binary)
     return Image.open(img)
 
-
 def norm_img(img):
     return (img - img.mean() / np.std(img))/255.0
-
 
 def create_video(img_dir_path, output_video_path):
     import envoy
@@ -98,20 +93,9 @@ def create_video(img_dir_path, output_video_path):
                %s""" % (full_path, output_video_path))
     response = envoy.run(command)
 
-
-
-
-
-
-
-
-
-
-
 '''
 FILES
 '''
-
 
 def most_recent_file(dir_path, ext=''):
     '''
@@ -121,16 +105,11 @@ def most_recent_file(dir_path, ext=''):
     newest = min(glob.iglob(query), key=os.path.getctime)
     return newest
 
-
 def make_dir(path):
     real_path = os.path.expanduser(path)
     if not os.path.exists(real_path):
         os.makedirs(real_path)
     return real_path
-
-
-
-
 
 '''
 BINNING
@@ -145,7 +124,6 @@ def linear_bin(a):
 def linear_unbin(b):
     a = b *(2/14) - 1
     return a
-
 
 def bin_Y(Y):
     d = []
@@ -163,10 +141,6 @@ def unbin_Y(Y):
         d.append(v)
     return np.array(d)
 
-
-
-
-
 '''
 NETWORKING
 '''
@@ -175,9 +149,6 @@ def my_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(('192.0.0.8', 1027))
     return s.getsockname()[0]
-
-
-
 
 '''
 OTHER
@@ -188,12 +159,10 @@ def merge_two_dicts(x, y):
     z.update(y)
     return z
 
-
-
 def param_gen(params):
     '''
     Accepts a dictionary of parameter options and returns 
     a list of dictionary with the permutations of the parameters.
     '''
     for p in itertools.product(*params.values()):
-        yield dict(zip(params.keys(), p ))
+        yield dict(zip(params.keys(), p))

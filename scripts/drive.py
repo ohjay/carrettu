@@ -12,40 +12,38 @@ Options:
   --config=<name>   vehicle configuration file name (without extension)  [default: vehicle]
 """
 
-import os
 from docopt import docopt
-
-import carrettu as dk
+import carrettu as ctu
 
 # Get args.
 args = docopt(__doc__)
 
 if __name__ == '__main__':
     # load config file
-    cfg = dk.config.parse_config('~/mydonkey/vehicle.ini')
+    cfg = ctu.config.parse_config('~/mydonkey/vehicle.ini')
 
     # load the actuators (default is the adafruit servo hat)
-    throttle_controller = dk.actuators.PCA9685_Controller(cfg['throttle_actuator_channel'])
-    steering_controller = dk.actuators.PCA9685_Controller(cfg['steering_actuator_channel'])
+    throttle_controller = ctu.actuators.PCA9685_Controller(cfg['throttle_actuator_channel'])
+    steering_controller = ctu.actuators.PCA9685_Controller(cfg['steering_actuator_channel'])
 
     # set the PWM ranges
-    throttle = dk.actuators.PWMThrottleActuator(controller=throttle_controller,
+    throttle = ctu.actuators.PWMThrottleActuator(controller=throttle_controller,
                                                   min_pulse=cfg['throttle_actuator_min_pulse'],
                                                   max_pulse=cfg['throttle_actuator_max_pulse'],
                                                   zero_pulse=cfg['throttle_actuator_zero_pulse'])
 
-    steering = dk.actuators.PWMSteeringActuator(controller=steering_controller,
+    steering = ctu.actuators.PWMSteeringActuator(controller=steering_controller,
                                                   left_pulse=cfg['steering_actuator_min_pulse'],
                                                   right_pulse=cfg['steering_actuator_max_pulse'])
 
     # abstract class to combine actuators
-    mixer = dk.mixers.AckermannSteeringMixer(steering, throttle)
+    mixer = ctu.mixers.AckermannSteeringMixer(steering, throttle)
 
-    # asynch img capture from pi camera
-    camera = dk.sensors.PiVideoStream()
+    # asynchronous img capture from pi camera
+    camera = ctu.sensors.PiVideoStream()
 
     # Create your car
-    car = dk.vehicles.TestVehicle(drive_loop_delay=cfg['vehicle_loop_delay'],
+    car = ctu.vehicles.TestVehicle(drive_loop_delay=cfg['vehicle_loop_delay'],
                                   camera=camera,
                                   actuator_mixer=mixer)
     

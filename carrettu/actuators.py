@@ -9,7 +9,6 @@ are wrapped in a mixer class before being used in the drive loop.
 import time
 import sys
 
-
 def map_range(x, X_min, X_max, Y_min, Y_max):
     ''' 
     Linear mapping between two ranges of values 

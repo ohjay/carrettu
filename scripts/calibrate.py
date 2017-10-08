@@ -11,10 +11,10 @@ Usage:
 """
 from time import sleep
 
-import donkey as dk
+import carrettu as ctu
 
 if __name__ == '__main__':
-	c = dk.actuators.PCA9685_Controller(0)
+	c = ctu.actuators.PCA9685_Controller(0)
 	for i in range (1, 1000):
 		c.set_pulse(i)
 		sleep(1)

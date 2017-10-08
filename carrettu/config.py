@@ -1,12 +1,7 @@
 import os
 import configparser
 
-import donkey as dk
-
-import keras
-
-if int(keras.__version__.split('.')[0]) < 2:
-    raise ImportError('You need keras version 2.0.0 or higher. Run "pip install keras --upgrade"')
+import carrettu as ctu
 
 config = configparser.ConfigParser()
 
@@ -18,13 +13,13 @@ results_path = os.path.join(my_path, 'results')
 
 
 def setup_paths():
-    dk.utils.make_dir(my_path)
+    ctu.utils.make_dir(my_path)
 
     paths = [sessions_path, models_path, 
              datasets_path, results_path]
 
     for p in paths:
-        dk.utils.make_dir(p)
+        ctu.utils.make_dir(p)
 
 
 def parse_config(config_path):
