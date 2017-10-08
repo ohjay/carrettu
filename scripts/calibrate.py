@@ -13,9 +13,7 @@ from time import sleep
 
 import donkey as dk
 
-
 if __name__ == '__main__':
-
 	c = dk.actuators.PCA9685_Controller(0)
 	for i in range (1, 1000):
 		c.set_pulse(i)
