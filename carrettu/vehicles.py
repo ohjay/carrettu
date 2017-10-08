@@ -58,7 +58,7 @@ class TestVehicle(BaseVehicle):
         start_time = time.time()
 
         # Wait 30 sec before starting the script
-        time.sleep(30)
+        # time.sleep(30)  # or not (-o)
 
         #drive loop
         while True:
@@ -69,8 +69,6 @@ class TestVehicle(BaseVehicle):
                 break
 
             start = now
-
-            milliseconds = int( (now - start_time) * 1000)
 
             #get image array image from camera (threaded)
             img_arr = self.camera.capture_arr()
@@ -84,6 +82,6 @@ class TestVehicle(BaseVehicle):
             # print current car state
             end = time.time()
             lag = end - start
-            print('\r CAR: angle: {:+04.2f}   throttle: {:+04.2f}   drive_mode: {}  lag: {:+04.2f}'.format(angle, throttle, drive_mode, lag), end='')           
+            print('\r CAR: angle: {:+04.2f}   throttle: {:+04.2f}  lag: {:+04.2f}'.format(angle, throttle, lag), end='')
             
             time.sleep(self.drive_loop_delay)
