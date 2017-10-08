@@ -9,7 +9,6 @@ Usage:
     drive.py [--remote=<name>] [--config=<name>]
 
 Options:
-  --remote=<name>   recording session name
   --config=<name>   vehicle configuration file name (without extension)  [default: vehicle]
 """
 
@@ -22,48 +21,33 @@ import donkey as dk
 args = docopt(__doc__)
 
 if __name__ == '__main__':
-
-    cfg = dk.config.parse_config('~/mydonkey/' + args['--config'] + '.ini')
-
-    #get the url for the remote host (for user control)
-    remote_url = args['--remote']
-    
-    #load config file
+    # load config file
     cfg = dk.config.parse_config('~/mydonkey/vehicle.ini')
 
-    #load the actuators (default is the adafruit servo hat)
-    mythrottlecontroller = dk.actuators.PCA9685_Controller(cfg['throttle_actuator_channel'])
-    mysteeringcontroller = dk.actuators.PCA9685_Controller(cfg['steering_actuator_channel'])
+    # load the actuators (default is the adafruit servo hat)
+    throttle_controller = dk.actuators.PCA9685_Controller(cfg['throttle_actuator_channel'])
+    steering_controller = dk.actuators.PCA9685_Controller(cfg['steering_actuator_channel'])
 
-    #set the PWM ranges
-    mythrottle = dk.actuators.PWMThrottleActuator(controller=mythrottlecontroller, 
+    # set the PWM ranges
+    throttle = dk.actuators.PWMThrottleActuator(controller=throttle_controller,
                                                   min_pulse=cfg['throttle_actuator_min_pulse'],
                                                   max_pulse=cfg['throttle_actuator_max_pulse'],
                                                   zero_pulse=cfg['throttle_actuator_zero_pulse'])
 
-    mysteering = dk.actuators.PWMSteeringActuator(controller=mysteeringcontroller,
+    steering = dk.actuators.PWMSteeringActuator(controller=steering_controller,
                                                   left_pulse=cfg['steering_actuator_min_pulse'],
                                                   right_pulse=cfg['steering_actuator_max_pulse'])
 
-    #abstract class to combine actuators
-    mymixer = dk.mixers.AckermannSteeringMixer(mysteering, mythrottle)
+    # abstract class to combine actuators
+    mixer = dk.mixers.AckermannSteeringMixer(steering, throttle)
 
-    #asych img capture from picamera
-    mycamera = dk.sensors.PiVideoStream()
-    
-    #setup the remote host
-    myremote = dk.remotes.RemoteClient(remote_url, vehicle_id=cfg['vehicle_id'])
+    # asynch img capture from pi camera
+    camera = dk.sensors.PiVideoStream()
 
-    #setup a local pilot
-    mypilot = dk.pilots.KerasCategorical(model_path=cfg['pilot_model_path'])
-    mypilot.load()
-
-    #Create your car
+    # Create your car
     car = dk.vehicles.BaseVehicle(drive_loop_delay=cfg['vehicle_loop_delay'],
-                                  camera=mycamera,
-                                  actuator_mixer=mymixer,
-                                  remote=myremote,
-                                  pilot=mypilot)
+                                  camera=camera,
+                                  actuator_mixer=mixer)
     
-    #Start the drive loop
+    # Start the drive loop
     car.start()
