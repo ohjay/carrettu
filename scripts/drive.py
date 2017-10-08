@@ -45,7 +45,7 @@ if __name__ == '__main__':
     camera = dk.sensors.PiVideoStream()
 
     # Create your car
-    car = dk.vehicles.BaseVehicle(drive_loop_delay=cfg['vehicle_loop_delay'],
+    car = dk.vehicles.TestVehicle(drive_loop_delay=cfg['vehicle_loop_delay'],
                                   camera=camera,
                                   actuator_mixer=mixer)
     
